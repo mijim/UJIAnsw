@@ -1,6 +1,7 @@
 package cliente;
 
 import model.Pregunta;
+import model.Usuario;
 
 public class MainClient {
 	public static void main(String[] args) {
@@ -14,7 +15,7 @@ public class MainClient {
 		for(Pregunta pr: cs.getUltimasPreguntas(10)) {
 			System.out.println(pr.getTitulo());
 		}
-
+ 
 		System.out.println(cs.logUsuario("anonimo@anonimo.anonimo", "x"));
 
 		System.out.println("PRUEBAS DE RAUL");
@@ -22,7 +23,7 @@ public class MainClient {
 			System.out.println(pr.getIdPregunta());
 			System.out.println(pr.getTitulo());
 		}
-
-		
+		System.out.println("Inserto un user");
+		cs.newUsuario(new Usuario("Paco Perez", "paco@gmail.com", "a"));
 	}
 }

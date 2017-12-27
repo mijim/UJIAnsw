@@ -20,7 +20,14 @@ public class Respuesta implements Serializable{
 		this.txtRespuesta=txt_respuesta;
 		this.valoracion=valoracion;
 	}
-
+	public Respuesta(int id_pregunta, int id_usuario, Date fecha, String txt_respuesta, int valoracion) {
+		this.idPregunta=id_pregunta;
+		this.idUsuario=id_usuario;
+		this.fecha=fecha;
+		this.txtRespuesta=txt_respuesta;
+		this.valoracion=valoracion;
+	}
+	
 	public int getIdRespuesta() { return idRespuesta; }
 	public void setIdRespuesta(int id_respuesta) { this.idRespuesta = id_respuesta; }
 

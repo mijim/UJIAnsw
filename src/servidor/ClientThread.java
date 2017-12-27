@@ -54,7 +54,7 @@ public class ClientThread extends Thread {
 	    			case "getTitPreguntas":
 	    				outObj.writeObject(new Mensaje("success", bd.getPreguntasContienenTitulo(mess.getArgum().get(0))));
 	    				break;
-	    			case "newUser":
+	    			case "newUser":  
 	    				bd.newUsuario((Usuario) mess.getObject());	    				
 	    				outObj.writeObject(new Mensaje("success"));
 	    				break;

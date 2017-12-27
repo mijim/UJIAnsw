@@ -22,7 +22,15 @@ public class Pregunta implements Serializable{
 		this.valoracion=valoracion;
 		this.nRespuestas=n_respuestas;
 	}
-
+	public Pregunta( int id_usuario, Date fecha, String titulo, String subtitulo, int valoracion, int n_respuestas) {
+		this.idUsuario=id_usuario;
+		this.fecha=fecha;
+		this.titulo=titulo;
+		this.subtitulo=subtitulo;
+		this.valoracion=valoracion;
+		this.nRespuestas=n_respuestas;
+	}
+	
 	public int getIdPregunta() { return idPregunta; }
 	public void setIdPregunta(int id_pregunta) { this.idPregunta = id_pregunta; }
 

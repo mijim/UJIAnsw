@@ -12,7 +12,12 @@ public class Usuario implements Serializable{
 	public Usuario(int id_usuario, String nombre, String email, String pass) { 
 		this.idUsuario=id_usuario;
 		this.nombre=nombre;
-		this.pass=nombre;
+		this.pass=pass;
+		this.email=email;
+	}
+	public Usuario(String nombre, String email, String pass) { 
+		this.nombre=nombre;
+		this.pass=pass;
 		this.email=email;
 	}
 	public int getIdUsuario() { return idUsuario; }

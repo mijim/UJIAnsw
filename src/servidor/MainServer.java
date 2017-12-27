@@ -8,4 +8,4 @@ public class MainServer {
 		BDConnection bd = BDConnection.getInstance();
 		Server server = Server.getInstance(bd);
 	}
-}
+} 

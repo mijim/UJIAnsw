@@ -145,7 +145,7 @@ public class BDConnection {
 			st.setString(1, user.getNombre());
 			st.setString(2, user.getEmail());
 			st.setString(3, user.getPass());
-			st.executeQuery();
+			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -164,7 +164,7 @@ public class BDConnection {
 			st.setString(4, preg.getSubtitulo());
 			st.setInt(5, preg.getValoracion());
 			st.setInt(6, preg.getNRespuestas());
-			st.executeQuery();
+			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -182,7 +182,7 @@ public class BDConnection {
 			st.setDate(3, (Date) res.getFecha());
 			st.setString(4, res.getTxtRespuesta());
 			st.setInt(5, res.getValoracion());
-			st.executeQuery();
+			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -198,6 +198,7 @@ public class BDConnection {
 			st.setInt(1, vp.getIdPregunta());
 			st.setInt(2, vp.getIdUsuario());
 			st.setBoolean(3, vp.getValoracion());
+			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -212,6 +213,7 @@ public class BDConnection {
 			st = connBd.prepareStatement("UPDATE valoracion_preg SET valoracion = NOT valoracion WHERE id_pregunta = ? AND id_usuario = ?");
 			st.setInt(1, vp.getIdPregunta());
 			st.setInt(2, vp.getIdUsuario());
+			st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -228,6 +230,7 @@ public class BDConnection {
 			st.setInt(2, vr.getIdRespuesta());
 			st.setInt(3, vr.getIdUsuario());
 			st.setBoolean(4, vr.getValoracion());
+			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -243,6 +246,7 @@ public class BDConnection {
 			st.setInt(1, vr.getIdPregunta());
 			st.setInt(2, vr.getIdUsuario());
 			st.setInt(3, vr.getIdRespuesta());
+			st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
