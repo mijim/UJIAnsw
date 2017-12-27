@@ -2,6 +2,7 @@ package cliente;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 
 import message.Mensaje;
@@ -47,7 +48,9 @@ public class ClientSocket {
 	@SuppressWarnings("unchecked")
 	public List<Pregunta> getUltimasPreguntas(int numPreg){
 		try {
-			outObj.writeObject(new Mensaje("getLastQuestions", numPreg+""));
+			List<String> ls = new LinkedList<String>();
+			ls.add(numPreg+"");
+			outObj.writeObject(new Mensaje("getLastQuestions", ls));
 			outObj.flush();
 			try {
 				Mensaje ret = (Mensaje) inObj.readObject();
@@ -63,21 +66,21 @@ public class ClientSocket {
 	
 	@SuppressWarnings("unchecked")
 	public List<Pregunta> getMejoresPreguntas(int numPreg){
-		List<Pregunta> ls = null;
 		try {
-			outObj.writeObject(new Mensaje("getBestQuestions", numPreg+""));
+			List<String> ls = new LinkedList<String>();
+			ls.add(numPreg+"");
+			outObj.writeObject(new Mensaje("getBestQuestions", ls));
 			outObj.flush();
 			try {
 				Mensaje ret = (Mensaje) inObj.readObject();
-				ls = (List<Pregunta>) ret.getObject();
+				return (List<Pregunta>) ret.getObject();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return ls;
 		}
-		return ls;
+		return null;
 	}
 	
 	
@@ -101,7 +104,10 @@ public class ClientSocket {
 	
 	public boolean logUsuario(String email, String pass) {
 			try {
-				outObj.writeObject(new Mensaje("login", email + ":" + pass));
+				List<String> ls = new LinkedList<String>();
+				ls.add(email);
+				ls.add(pass);
+				outObj.writeObject(new Mensaje("login", ls));
 				outObj.flush();
 				return inObj.readBoolean();
 			} catch (IOException e) {

@@ -1,6 +1,7 @@
 package message;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Mensaje implements Serializable
 {
@@ -8,9 +9,9 @@ public class Mensaje implements Serializable
 	private static final long serialVersionUID = -7048407600797927388L;
 	private Object obj;
 	private String message;
-	private String arg;
+	private List<String> arg;
 	
-	public Mensaje(String message, String arg, Object obj) {
+	public Mensaje(String message, List<String> arg, Object obj) {
 		this.message = message;
 		this.arg = arg;
 		this.obj = obj;
@@ -18,11 +19,11 @@ public class Mensaje implements Serializable
 	
 	public Mensaje(String message) {
 		this.message = message;
-		this.arg = "";
+		this.arg = null;
 		this.obj = null;
 	}
 	
-	public Mensaje(String message, String arg) {
+	public Mensaje(String message, List<String> arg) {
 		this.message = message;
 		this.arg = arg;
 		this.obj = null;
@@ -30,7 +31,7 @@ public class Mensaje implements Serializable
 	
 	public Mensaje(String message, Object obj) {
 		this.message = message;
-		this.arg = "";
+		this.arg = null;
 		this.obj = obj;
 	}
 	
@@ -38,7 +39,7 @@ public class Mensaje implements Serializable
 		return message;
 	}
 	
-	public String getArgum() {
+	public List<String> getArgum() {
 		return arg;
 	}
 	

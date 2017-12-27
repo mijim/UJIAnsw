@@ -1,9 +1,11 @@
 package servidor;
 
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 import db.BDConnection;
 import message.Mensaje;
@@ -33,8 +35,8 @@ public class ClientThread extends Thread {
 	    		switch(mess.getMessage()) {
 	    			//Acciones del usuario
 	    			case "login":
-	    				String[] auth = mess.getArgum().split(":");
-	    				Usuario usr = bd.logUsuario(auth[0], auth[1]);
+	    				List<String> auth = mess.getArgum();
+	    				Usuario usr = bd.logUsuario(auth.get(0), auth.get(1));
 	    				if(usr != null) {
 	    					System.out.println("Logged in");
 	    					user = usr;
@@ -45,11 +47,11 @@ public class ClientThread extends Thread {
 	    				outObj.flush();
 	    				break;
 	    			case "getLastQuestions":
-	    				outObj.writeObject(new Mensaje("success", bd.getUltimasPreguntas(Integer.parseInt(mess.getArgum()))));
+	    				outObj.writeObject(new Mensaje("success", bd.getUltimasPreguntas(Integer.parseInt(mess.getArgum().get(0)))));
 	    				outObj.flush();
 	    				break;
 	    			case "getBestQuestions":
-	    				outObj.writeObject(new Mensaje("success", bd.getMejoresPreguntas(Integer.parseInt(mess.getArgum()))));
+	    				outObj.writeObject(new Mensaje("success", bd.getMejoresPreguntas(Integer.parseInt(mess.getArgum().get(0)))));
 	    				outObj.flush();
 	    				break;
 	    			case "getQuestionsByTitle":
