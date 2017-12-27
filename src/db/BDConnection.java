@@ -12,10 +12,10 @@ import java.util.List;
 import model.*;
 
 public class BDConnection {
-	
+
 	private volatile static BDConnection unicInstance;
 	private Connection connBd;
-	
+
 	//Constructor privado para evitar instanciar más de una vez la clase
 	private BDConnection() {
 		try {
@@ -26,7 +26,7 @@ public class BDConnection {
 			e.printStackTrace();
 		}
 	}
-	
+
 	//Obtención de la instancia de clase
 	public static BDConnection getInstance() {
 		if(unicInstance == null) {
@@ -38,46 +38,46 @@ public class BDConnection {
 		}
 		return unicInstance;
 	}
-	
+
 	//Comprobar si el usuario existe con el mail y la contraseña para el login
 	public Usuario logUsuario(String mail, String pass) {
-		 PreparedStatement st;
-		 Usuario user = null;
-			try {
-				st = connBd.prepareStatement("SELECT * FROM Usuario WHERE email=? AND pass=?");
-	            st.setString(1, mail);
-	            st.setString(2, pass);
-	            ResultSet rs = st.executeQuery();
-	            if(rs.next()) {
-	            	user = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-	            }
-	            	
-			} catch (SQLException e) {
-				e.printStackTrace();
+		PreparedStatement st;
+		Usuario user = null;
+		try {
+			st = connBd.prepareStatement("SELECT * FROM Usuario WHERE email=? AND pass=?");
+			st.setString(1, mail);
+			st.setString(2, pass);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				user = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
 			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return user;
 	}
-	
+
 	//Obtención de las x ultimas preguntas formuladas
 	public List<Pregunta> getUltimasPreguntas(int numPreg) {
-			List<Pregunta> ls = new LinkedList<Pregunta>();
-			PreparedStatement st;
-			Pregunta pr;
-			try {
-				st = connBd.prepareStatement("SELECT * FROM Pregunta ORDER BY fecha ASC LIMIT ?");
-				st.setInt(1, numPreg);
-	            ResultSet rs = st.executeQuery();
-	            while(rs.next()) {
-	            	pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
-	            	ls.add(pr);
-	            }
-	            	
-			} catch (SQLException e) {
-				e.printStackTrace();
+		List<Pregunta> ls = new LinkedList<Pregunta>();
+		PreparedStatement st;
+		Pregunta pr;
+		try {
+			st = connBd.prepareStatement("SELECT * FROM Pregunta ORDER BY fecha ASC LIMIT ?");
+			st.setInt(1, numPreg);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				ls.add(pr);
 			}
-			return ls;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ls;
 	}
-	
+
 	//Obtención de las x preguntas con mejor valoración
 	public List<Pregunta> getMejoresPreguntas(int numPreg){
 		List<Pregunta> ls = new LinkedList<Pregunta>();
@@ -86,17 +86,17 @@ public class BDConnection {
 		try {
 			st = connBd.prepareStatement("SELECT * FROM Pregunta ORDER BY valoracion DESC LIMIT ?");
 			st.setInt(1, numPreg);
-	        ResultSet rs = st.executeQuery();
-	        while(rs.next()) {
-	            pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
-	            ls.add(pr);
-	        }
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				ls.add(pr);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return ls;
 	}
-	
+
 	//Obtencion de las respuestas de una pregunta
 	public List<Respuesta> getRespuestas(int idPreg){
 		List<Respuesta> ls = new LinkedList<Respuesta>();
@@ -105,17 +105,37 @@ public class BDConnection {
 		try {
 			st = connBd.prepareStatement("SELECT * FROM Respuesta WHERE id_pregunta = ?");
 			st.setInt(1, idPreg);
-            ResultSet rs = st.executeQuery();
-            while(rs.next()) {
-            	res = new Respuesta(rs.getInt(1),rs.getInt(2),rs.getInt(3), rs.getDate(4), rs.getString(5), rs.getInt(6));
-            	ls.add(res);
-            }
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				res = new Respuesta(rs.getInt(1),rs.getInt(2),rs.getInt(3), rs.getDate(4), rs.getString(5), rs.getInt(6));
+				ls.add(res);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return ls;
 	}
-	
+
+	public List<Pregunta> getPreguntasContienenTitulo(String palabra){
+		List<Pregunta> ls = new LinkedList<Pregunta>();
+		PreparedStatement st;
+		Pregunta pr;
+		try {
+			st = connBd.prepareStatement("SELECT * FROM pregunta WHERE UPPER(titulo) LIKE UPPER('%"+palabra+"%')");
+			//st.setString(1, palabra);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				pr = new Pregunta(rs.getInt(1), rs.getInt(2),rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				ls.add(pr);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ls;
+	}
+
+
+
 	//Registrar un nuevo usuario
 	public String newUsuario(Usuario user) {
 		PreparedStatement st;
@@ -131,7 +151,7 @@ public class BDConnection {
 		}
 		return "correct";
 	}
-	
+
 	//Añadir una nueva pregunta
 	public String newPregunta(Pregunta preg) {
 		PreparedStatement st;
@@ -150,7 +170,7 @@ public class BDConnection {
 		}
 		return "correct";
 	}
-	
+
 	//Añadir una respuesta a una pregunta
 	public String newRespuesta(Respuesta res) {
 		PreparedStatement st;
@@ -168,7 +188,7 @@ public class BDConnection {
 		}
 		return "correct";
 	}
-	
+
 	//Añadir una nueva valoracion a una pregunta
 	public String newValoracionPregunta(ValoracionPregunta vp) {
 		PreparedStatement st;
@@ -183,7 +203,7 @@ public class BDConnection {
 		}
 		return "correct";
 	}
-	
+
 	//Cambiar la valoracion de una pregunta
 	public String cambiarValoracionPregunta(ValoracionPregunta vp) {
 		PreparedStatement st;
@@ -197,7 +217,7 @@ public class BDConnection {
 		}
 		return "correct";
 	}
-	
+
 	//Añadir una nueva valoracion de una respuesta
 	public String newValoracionRespuesta(ValoracionRespuesta vr) {
 		PreparedStatement st;
@@ -213,7 +233,7 @@ public class BDConnection {
 		}
 		return "correct";
 	}
-	
+
 	//Cambiar una valoracion de una respuesta
 	public String cambiarValoracionRespuesta(ValoracionRespuesta vr) {
 		PreparedStatement st;

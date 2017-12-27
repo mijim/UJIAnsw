@@ -52,6 +52,11 @@ public class ClientThread extends Thread {
 	    				outObj.writeObject(bd.getMejoresPreguntas(10));
 	    				outObj.flush();
 	    				break;
+	    			case "getQuestionsByTitle":
+	    				String palabra = inObj.readUTF();
+	    				outObj.writeObject(bd.getPreguntasContienenTitulo(palabra));
+	    				outObj.flush();
+	    				break;
 	    			default:
 	    		}
 	    		accion = inObj.readUTF();
