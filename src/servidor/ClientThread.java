@@ -44,48 +44,52 @@ public class ClientThread extends Thread {
 	    				}else {
 	    					outObj.writeObject(new Mensaje("success"));
 	    				}
-	    				outObj.flush();
 	    				break;
-	    			case "getLastQuestions":
+	    			case "getUltPreguntas":
 	    				outObj.writeObject(new Mensaje("success", bd.getUltimasPreguntas(Integer.parseInt(mess.getArgum().get(0)))));
-	    				outObj.flush();
 	    				break;
-	    			case "getBestQuestions":
+	    			case "getMejPreguntas":
 	    				outObj.writeObject(new Mensaje("success", bd.getMejoresPreguntas(Integer.parseInt(mess.getArgum().get(0)))));
-	    				outObj.flush();
 	    				break;
-	    			case "getQuestionsByTitle":
+	    			case "getTitPreguntas":
 	    				outObj.writeObject(new Mensaje("success", bd.getPreguntasContienenTitulo(mess.getArgum().get(0))));
-	    				outObj.flush();
 	    				break;
-	    			case "InsertUser":
+	    			case "newUser":
 	    				bd.newUsuario((Usuario) mess.getObject());	    				
 	    				outObj.writeObject(new Mensaje("success"));
-	    				outObj.flush();
 	    				break;
-	    			case "InsertValRes":
+	    			case "newValRes":
 	    				bd.cambiarValoracionRespuesta((ValoracionRespuesta) mess.getObject());
 	    				outObj.writeObject(new Mensaje("Success"));
-	    				outObj.flush();
 	    				break;
 	    			case "newPregunta":
 	    				bd.newPregunta((Pregunta)mess.getObject());
 	    				outObj.writeObject(new Mensaje("success"));
-	    				outObj.flush();
+	    				break;
 	    			case "newRespuesta":
 	    				bd.newRespuesta((Respuesta)mess.getObject());
 	    				outObj.writeObject(new Mensaje("success"));
-	    				outObj.flush();
+	    				break;
 	    			case "newValPregunta":
 	    				bd.newValoracionPregunta((ValoracionPregunta)mess.getObject());
 	    				outObj.writeObject(new Mensaje("sucess"));
-	    				outObj.flush();
+	    				break;
 	    			case "chValPregunta":
 	    				bd.cambiarValoracionPregunta((ValoracionPregunta)mess.getObject());
 	    				outObj.writeObject(new Mensaje("success"));
-	    				outObj.flush();
+	    				break;
+	    			case "newValRespuesta":
+	    				bd.newValoracionRespuesta((ValoracionRespuesta)mess.getObject());
+	    				outObj.writeObject(new Mensaje("sucess"));
+	    				break;
+	    			case "chValRespuesta":
+	    				bd.cambiarValoracionRespuesta((ValoracionRespuesta)mess.getObject());
+	    				outObj.writeObject(new Mensaje("success"));
+	    				break;
 	    			default:
+
 	    		}
+	    		outObj.flush();
 	    		mess = (Mensaje) inObj.readObject();
 	    	}
 	    	socket.close();
