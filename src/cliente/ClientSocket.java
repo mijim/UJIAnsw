@@ -115,4 +115,25 @@ public class ClientSocket {
 			}
 			return false;
 	}
+	
+	public String newUsuario(Usuario user) {
+		try {
+			outObj.writeObject(new Mensaje("InsertUser", user));
+			outObj.flush();
+			return (String) inObj.readObject();
+		}catch(IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
+	
+	public String newValoracionRespuesta(ValoracionRespuesta vr) {
+		try {
+			outObj.writeObject(new Mensaje("InsertValRes", vr));
+			outObj.flush();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
 }
