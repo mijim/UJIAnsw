@@ -102,17 +102,77 @@ public class ClientSocket {
 		return null;
 	}
 	
-	public boolean logUsuario(String email, String pass) {
+	public String newPregunta(Pregunta preg){
+		try {
+			outObj.writeObject(new Mensaje("newPregunta", preg));
+			outObj.flush();
+			try {
+				return ((Mensaje)inObj.readObject()).getMessage();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
+	
+	public String newRespuesta(Respuesta res){
+		try {
+			outObj.writeObject(new Mensaje("newRespuesta", res));
+			outObj.flush();
+			try {
+				return ((Mensaje)inObj.readObject()).getMessage();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
+	
+	public String newValoracionPregunta(ValoracionPregunta vp) {
+		try {
+			outObj.writeObject(new Mensaje("newValPregunta", vp));
+			outObj.flush();
+			try {
+				return ((Mensaje)inObj.readObject()).getMessage();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
+	
+	public String chValoracionPregunta(ValoracionPregunta vp) {
+		try {
+			outObj.writeObject(new Mensaje("chValPregunta", vp));
+			outObj.flush();
+			try {
+				return ((Mensaje)inObj.readObject()).getMessage();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
+
+	public String logUsuario(String email, String pass) {
 			try {
 				List<String> ls = new LinkedList<String>();
 				ls.add(email);
 				ls.add(pass);
 				outObj.writeObject(new Mensaje("login", ls));
 				outObj.flush();
-				return inObj.readBoolean();
-			} catch (IOException e) {
+				return ((Mensaje)inObj.readObject()).getMessage();
+			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			return false;
+			return "error";
 	}
 }

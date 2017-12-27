@@ -58,6 +58,22 @@ public class ClientThread extends Thread {
 	    				outObj.writeObject(new Mensaje("success", bd.getPreguntasContienenTitulo(mess.getArgum().get(0))));
 	    				outObj.flush();
 	    				break;
+	    			case "newPregunta":
+	    				bd.newPregunta((Pregunta)mess.getObject());
+	    				outObj.writeObject(new Mensaje("success"));
+	    				outObj.flush();
+	    			case "newRespuesta":
+	    				bd.newRespuesta((Respuesta)mess.getObject());
+	    				outObj.writeObject(new Mensaje("success"));
+	    				outObj.flush();
+	    			case "newValPregunta":
+	    				bd.newValoracionPregunta((ValoracionPregunta)mess.getObject());
+	    				outObj.writeObject(new Mensaje("sucess"));
+	    				outObj.flush();
+	    			case "chValPregunta":
+	    				bd.cambiarValoracionPregunta((ValoracionPregunta)mess.getObject());
+	    				outObj.writeObject(new Mensaje("success"));
+	    				outObj.flush();
 	    			default:
 	    		}
 	    		mess = (Mensaje) inObj.readObject();
