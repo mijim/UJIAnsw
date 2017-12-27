@@ -41,7 +41,7 @@ public class Server {
 	    }
 	    
 	    public static Server getInstance(BDConnection bd) {
-	    	if(unicInstance == null) {
+	    	if(unicInstance == null) { 
 	    		synchronized(Server.class) {
 	    			if(unicInstance == null) {
 	    				unicInstance = new Server(bd);

@@ -30,7 +30,7 @@ public class Mensaje implements Serializable
 	}
 	
 	public Mensaje(String message, Object obj) {
-		this.message = message;
+		this.message = message; 
 		this.arg = null;
 		this.obj = obj;
 	}

@@ -135,8 +135,6 @@ public class BDConnection {
 		return ls;
 	}
 
-
-
 	//Registrar un nuevo usuario
 	public String newUsuario(Usuario user) {
 		PreparedStatement st;
@@ -148,7 +146,7 @@ public class BDConnection {
 			st.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return "error:x"; 			//TODO definir errores
+			return "error"; 			//TODO definir errores
 		}
 		return "correct";
 	}
