@@ -80,6 +80,25 @@ public class ClientSocket {
 		return ls;
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Pregunta> getPreguntasContienenTitulo(String palabra){
+		try {
+			outObj.writeUTF("getQuestionsByTitle");
+			outObj.flush();
+			outObj.writeUTF(palabra);
+			outObj.flush();
+			try {
+				return (List<Pregunta>) inObj.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public boolean logUsuario(String email, String pass) {
 			try {
 				outObj.writeObject(new Mensaje("login", email + ":" + pass));
