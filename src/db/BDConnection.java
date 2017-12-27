@@ -116,6 +116,7 @@ public class BDConnection {
 		return ls;
 	}
 
+	//Busqueda de palabras por titulo
 	public List<Pregunta> getPreguntasContienenTitulo(String palabra){
 		List<Pregunta> ls = new LinkedList<Pregunta>();
 		PreparedStatement st;

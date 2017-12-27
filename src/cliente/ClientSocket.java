@@ -87,9 +87,9 @@ public class ClientSocket {
 	@SuppressWarnings("unchecked")
 	public List<Pregunta> getPreguntasContienenTitulo(String palabra){
 		try {
-			outObj.writeUTF("getQuestionsByTitle");
-			outObj.flush();
-			outObj.writeUTF(palabra);
+			List<String> ls = new LinkedList<String>();
+			ls.add(palabra);
+			outObj.writeObject(new Mensaje("getQuestionsByTitle", ls));
 			outObj.flush();
 			try {
 				return (List<Pregunta>) inObj.readObject();
