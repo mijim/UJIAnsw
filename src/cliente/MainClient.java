@@ -23,6 +23,6 @@ public class MainClient {
 			System.out.println(pr.getTitulo());
 		}
 
-
+		
 	}
 }

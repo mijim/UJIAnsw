@@ -92,7 +92,8 @@ public class ClientSocket {
 			outObj.writeObject(new Mensaje("getTitPreguntas", ls));
 			outObj.flush();
 			try {
-				return (List<Pregunta>) inObj.readObject();
+				Mensaje ret = (Mensaje) inObj.readObject();
+				return (List<Pregunta>) ret.getObject();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
