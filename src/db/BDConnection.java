@@ -19,7 +19,9 @@ public class BDConnection {
 	//Constructor privado para evitar instanciar más de una vez la clase
 	private BDConnection() {
 		try {
-			this.connBd = DriverManager.getConnection("jdbc:postgresql://horton.elephantsql.com:5432/eojsrzti", "eojsrzti", "J27bhgEElD0R2aAT-q-T7wkaIREZVT8I");
+			String url = "jdbc:postgresql://rubenmarti.com:8080/dbdisenoraul";
+			this.connBd = DriverManager.getConnection(url, "raul","PrsUqbW1");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
