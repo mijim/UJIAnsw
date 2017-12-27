@@ -50,7 +50,7 @@ public class ClientSocket {
 		try {
 			List<String> ls = new LinkedList<String>();
 			ls.add(numPreg+"");
-			outObj.writeObject(new Mensaje("getLastQuestions", ls));
+			outObj.writeObject(new Mensaje("getUltPreguntas", ls));
 			outObj.flush();
 			try {
 				Mensaje ret = (Mensaje) inObj.readObject();
@@ -69,7 +69,7 @@ public class ClientSocket {
 		try {
 			List<String> ls = new LinkedList<String>();
 			ls.add(numPreg+"");
-			outObj.writeObject(new Mensaje("getBestQuestions", ls));
+			outObj.writeObject(new Mensaje("getMejPreguntas", ls));
 			outObj.flush();
 			try {
 				Mensaje ret = (Mensaje) inObj.readObject();
@@ -89,7 +89,7 @@ public class ClientSocket {
 		try {
 			List<String> ls = new LinkedList<String>();
 			ls.add(palabra);
-			outObj.writeObject(new Mensaje("getQuestionsByTitle", ls));
+			outObj.writeObject(new Mensaje("getTitPreguntas", ls));
 			outObj.flush();
 			try {
 				return (List<Pregunta>) inObj.readObject();
@@ -162,6 +162,22 @@ public class ClientSocket {
 		return "error";
 	}
 
+	
+	public String chValoracionRespuesta(ValoracionRespuesta vs) {
+		try {
+			outObj.writeObject(new Mensaje("chValRespuesta", vs));
+			outObj.flush();
+			try {
+				return ((Mensaje)inObj.readObject()).getMessage();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "error";
+	}
+	
 	public String logUsuario(String email, String pass) {
 			try {
 				List<String> ls = new LinkedList<String>();
@@ -178,9 +194,9 @@ public class ClientSocket {
 	
 	public String newUsuario(Usuario user) {
 		try {
-			outObj.writeObject(new Mensaje("InsertUser", user));
+			outObj.writeObject(new Mensaje("newUser", user));
 			outObj.flush();
-			return (String) inObj.readObject();
+			return ((Mensaje)inObj.readObject()).getMessage();
 		}catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -189,7 +205,7 @@ public class ClientSocket {
 	
 	public String newValoracionRespuesta(ValoracionRespuesta vr) {
 		try {
-			outObj.writeObject(new Mensaje("InsertValRes", vr));
+			outObj.writeObject(new Mensaje("newValRes", vr));
 			outObj.flush();
 		}catch(IOException e) {
 			e.printStackTrace();
