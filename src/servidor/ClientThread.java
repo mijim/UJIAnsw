@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import db.BDConnection;
+import message.Mensaje;
 import model.*;
 
 public class ClientThread extends Thread {
@@ -23,44 +24,43 @@ public class ClientThread extends Thread {
 	public void run() {
 		ObjectInputStream inObj = null;
 		ObjectOutputStream outObj = null;
-		String accion = "";
+		Mensaje mess = null;
 	    try {
 			outObj = new ObjectOutputStream(socket.getOutputStream());
 	    	inObj = new ObjectInputStream(socket.getInputStream());
-	    	accion = inObj.readUTF();
-	    	while(!accion.equals("logOff")) {
-	    		System.out.println(accion);
-	    		switch(accion) {
+	    	mess = (Mensaje) inObj.readObject();
+	    	while(!mess.getMessage().equals("logOff")) {
+	    		switch(mess.getMessage()) {
 	    			//Acciones del usuario
 	    			case "login":
-	    				String[] auth = inObj.readUTF().split(":");
+	    				String[] auth = mess.getArgum().split(":");
 	    				Usuario usr = bd.logUsuario(auth[0], auth[1]);
 	    				if(usr != null) {
 	    					System.out.println("Logged in");
 	    					user = usr;
-	    					outObj.writeBoolean(true);
+	    					outObj.writeObject(new Mensaje("fail"));;
 	    				}else {
-	    					outObj.writeBoolean(false);
+	    					outObj.writeObject(new Mensaje("success"));
 	    				}
 	    				outObj.flush();
 	    				break;
 	    			case "getLastQuestions":
-	    				outObj.writeObject(bd.getUltimasPreguntas(10));
+	    				outObj.writeObject(new Mensaje("success", bd.getUltimasPreguntas(Integer.parseInt(mess.getArgum()))));
 	    				outObj.flush();
 	    				break;
 	    			case "getBestQuestions":
-	    				outObj.writeObject(bd.getMejoresPreguntas(10));
+	    				outObj.writeObject(new Mensaje("success", bd.getMejoresPreguntas(Integer.parseInt(mess.getArgum()))));
 	    				outObj.flush();
 	    				break;
 	    			default:
 	    		}
-	    		accion = inObj.readUTF();
+	    		mess = (Mensaje) inObj.readObject();
 	    	}
 	    	socket.close();
-	    	System.out.println("Conexión con el cliente cerrada");
+	    	System.out.println("Conexión con el cliente cerrada... ");
 	    }
-		catch (IOException e) {
-			System.err.println("Conexión cerrada con el cliente... ");
+		catch (IOException | ClassNotFoundException e) {
+			System.err.println("Conexión cerrada inesperadamente con el cliente... ");
 			e.printStackTrace();
 		}
 	    

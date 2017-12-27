@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
+import message.Mensaje;
 import model.*;
 
 public class ClientSocket {
@@ -44,12 +45,13 @@ public class ClientSocket {
 	//Acciones del usuario
 	
 	@SuppressWarnings("unchecked")
-	public List<Pregunta> getUltimasPreguntas(){
+	public List<Pregunta> getUltimasPreguntas(int numPreg){
 		try {
-			outObj.writeUTF("getLastQuestions");
+			outObj.writeObject(new Mensaje("getLastQuestions", numPreg+""));
 			outObj.flush();
 			try {
-				return (List<Pregunta>) inObj.readObject();
+				Mensaje ret = (Mensaje) inObj.readObject();
+				return (List<Pregunta>) ret.getObject();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -60,13 +62,14 @@ public class ClientSocket {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Pregunta> getMejoresPreguntas(){
+	public List<Pregunta> getMejoresPreguntas(int numPreg){
 		List<Pregunta> ls = null;
 		try {
-			outObj.writeUTF("getBestQuestions");
+			outObj.writeObject(new Mensaje("getBestQuestions", numPreg+""));
 			outObj.flush();
 			try {
-				ls = (List<Pregunta>) inObj.readObject();
+				Mensaje ret = (Mensaje) inObj.readObject();
+				ls = (List<Pregunta>) ret.getObject();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -79,9 +82,7 @@ public class ClientSocket {
 	
 	public boolean logUsuario(String email, String pass) {
 			try {
-				outObj.writeUTF("login");
-				outObj.flush();
-				outObj.writeUTF(email + ":" + pass);
+				outObj.writeObject(new Mensaje("login", email + ":" + pass));
 				outObj.flush();
 				return inObj.readBoolean();
 			} catch (IOException e) {
