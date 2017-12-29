@@ -38,11 +38,11 @@ public class ClientThread extends Thread {
 	    				List<String> auth = mess.getArgum();
 	    				Usuario usr = bd.logUsuario(auth.get(0), auth.get(1));
 	    				if(usr != null) {
-	    					System.out.println("Logged in");
+//	    					System.out.println("Logged in");
 	    					user = usr;
-	    					outObj.writeObject(new Mensaje("fail"));;
+	    					outObj.writeObject(new Mensaje("succes",usr));;
 	    				}else {
-	    					outObj.writeObject(new Mensaje("success"));
+	    					outObj.writeObject(new Mensaje("fail"));
 	    				}
 	    				break;
 	    			case "getUltPreguntas":
