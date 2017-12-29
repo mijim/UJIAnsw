@@ -38,6 +38,11 @@ public class ClientSocket {
 
 	//Acciones del usuario
 
+	public void desconectar() throws IOException, ClassNotFoundException{
+		outObj.writeObject(new Mensaje("logOff"));
+		outObj.flush();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Pregunta> getUltimasPreguntas(int numPreg) throws IOException, ClassNotFoundException{
 		List<String> ls = new LinkedList<String>();
