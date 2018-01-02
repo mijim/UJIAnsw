@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 public class Pregunta implements Serializable{
 	private static final long serialVersionUID = 6143418671025949534L;

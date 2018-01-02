@@ -35,7 +35,6 @@ public class MainClient {
 			}
 
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
