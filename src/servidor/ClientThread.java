@@ -85,6 +85,9 @@ public class ClientThread extends Thread {
 	    				bd.cambiarValoracionRespuesta((ValoracionRespuesta)mess.getObject());
 	    				outObj.writeObject(new Mensaje("success"));
 	    				break;
+	    			case "getRespuestas":
+	    				outObj.writeObject(new Mensaje("success",bd.getRespuestas(Integer.parseInt(mess.getArgum().get(0)))));
+	    				break;
 	    			default:
 
 	    		}
