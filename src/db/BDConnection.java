@@ -57,6 +57,23 @@ public class BDConnection {
 		}
 		return user;
 	}
+	
+	public Usuario getUsuarioById(int idUsuario){
+		PreparedStatement st;
+		Usuario user = null;
+		try {
+			st = connBd.prepareStatement("SELECT * FROM Usuario WHERE id_usuario=? ");
+			st.setInt(1, idUsuario);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				user = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
 
 	//Obtención de las x ultimas preguntas formuladas
 	public List<Pregunta> getUltimasPreguntas(int numPreg) {

@@ -88,6 +88,9 @@ public class ClientThread extends Thread {
 	    			case "getRespuestas":
 	    				outObj.writeObject(new Mensaje("success",bd.getRespuestas(Integer.parseInt(mess.getArgum().get(0)))));
 	    				break;
+	    			case "getUsuarioById":
+	    				outObj.writeObject(new Mensaje("success",bd.getUsuarioById(Integer.parseInt(mess.getArgum().get(0)))));
+	    				break;
 	    			default:
 
 	    		}
