@@ -7,9 +7,9 @@ public class ValoracionRespuesta implements Serializable{
 	private int idPregunta;
 	private int idRespuesta;
 	private int idUsuario;
-	private boolean valoracion;
+	private Boolean valoracion;
 
-	public ValoracionRespuesta(int id_pregunta, int id_respuesta, int id_usuario, boolean valoracion) {
+	public ValoracionRespuesta(int id_pregunta, int id_respuesta, int id_usuario, Boolean valoracion) {
 		this.idPregunta=id_pregunta;
 		this.idRespuesta=id_respuesta;
 		this.idUsuario=id_usuario;
@@ -27,4 +27,10 @@ public class ValoracionRespuesta implements Serializable{
 
 	public boolean getValoracion() { return valoracion; }
 	public void setValoracion(boolean valoracion) { this.valoracion = valoracion; }
+
+	public String toString(){
+		if(valoracion!=null)
+			return valoracion?"+1":"-1";
+		return "0";
+	}
 }

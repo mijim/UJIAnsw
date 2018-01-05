@@ -91,6 +91,15 @@ public class ClientThread extends Thread {
 	    			case "getUsuarioById":
 	    				outObj.writeObject(new Mensaje("success",bd.getUsuarioById(Integer.parseInt(mess.getArgum().get(0)))));
 	    				break;
+	    			case "getValoracionPregunta":
+	    				outObj.writeObject(new Mensaje("success",bd.getValoracionPregunta(Integer.parseInt(mess.getArgum().get(0)), Integer.parseInt(mess.getArgum().get(1)))));
+	    				break;
+	    			case "getValoracionRespuesta":
+	    				outObj.writeObject(new Mensaje("success",bd.getValoracionRespuesta(Integer.parseInt(mess.getArgum().get(0)), Integer.parseInt(mess.getArgum().get(1)),Integer.parseInt(mess.getArgum().get(2)))));
+	    				break; 
+	    			case "getPreguntasByIdUsuario":
+	    				outObj.writeObject(new Mensaje("success", bd.getPreguntasByIdUsuario(Integer.parseInt(mess.getArgum().get(0)))));
+	    				break;
 	    			default:
 
 	    		}

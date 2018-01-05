@@ -58,6 +58,25 @@ public class BDConnection {
 		return user;
 	}
 	
+	public List<Pregunta> getPreguntasByIdUsuario(int idUsuario){
+		List<Pregunta> ls = new LinkedList<Pregunta>();
+		PreparedStatement st;
+		Pregunta pr;
+		try {
+			st = connBd.prepareStatement("SELECT * FROM Pregunta WHERE id_usuario=? ORDER BY fecha ASC ");
+			st.setInt(1, idUsuario);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				ls.add(pr);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ls;
+	}
+	
 	public Usuario getUsuarioById(int idUsuario){
 		PreparedStatement st;
 		Usuario user = null;
@@ -73,6 +92,43 @@ public class BDConnection {
 			e.printStackTrace();
 		}
 		return user;
+	}
+	
+	public ValoracionPregunta getValoracionPregunta(int idUsuario, int idPregunta){
+		PreparedStatement st;
+		ValoracionPregunta value = null;
+		try {
+			st = connBd.prepareStatement("SELECT * FROM valoracion_preg WHERE id_usuario=? AND id_pregunta=?");
+			st.setInt(1, idUsuario);
+			st.setInt(2, idPregunta);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				value= new ValoracionPregunta(rs.getInt(1), rs.getInt(2), rs.getBoolean(3));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
+	
+	public ValoracionRespuesta getValoracionRespuesta(int idUsuario, int idPregunta, int idRespuesta){
+		PreparedStatement st;
+		ValoracionRespuesta value = null;
+		try {
+			st = connBd.prepareStatement("SELECT * FROM valoracion_res WHERE id_usuario=? AND id_pregunta=? AND id_respuesta=?");
+			st.setInt(1, idUsuario);
+			st.setInt(2, idPregunta);
+			st.setInt(3, idRespuesta);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				value= new ValoracionRespuesta(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getBoolean(4));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return value;
 	}
 
 	//Obtención de las x ultimas preguntas formuladas
@@ -225,9 +281,10 @@ public class BDConnection {
 	public String cambiarValoracionPregunta(ValoracionPregunta vp) {
 		PreparedStatement st;
 		try {
-			st = connBd.prepareStatement("UPDATE valoracion_preg SET valoracion = NOT valoracion WHERE id_pregunta = ? AND id_usuario = ?");
-			st.setInt(1, vp.getIdPregunta());
-			st.setInt(2, vp.getIdUsuario());
+			st = connBd.prepareStatement("UPDATE valoracion_preg SET valoracion = ? WHERE id_pregunta = ? AND id_usuario = ?");
+			st.setBoolean(1, vp.getValoracion());
+			st.setInt(2, vp.getIdPregunta());
+			st.setInt(3, vp.getIdUsuario());
 			st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -257,7 +314,7 @@ public class BDConnection {
 	public String cambiarValoracionRespuesta(ValoracionRespuesta vr) {
 		PreparedStatement st;
 		try {
-			st = connBd.prepareStatement("UPDATE valoracion_preg SET valoracion = NOT valoracion WHERE id_pregunta = ? AND id_usuario = ? AND id_respuesta = ?");
+			st = connBd.prepareStatement("UPDATE valoracion_res SET valoracion = NOT valoracion WHERE id_pregunta = ? AND id_usuario = ? AND id_respuesta = ?");
 			st.setInt(1, vr.getIdPregunta());
 			st.setInt(2, vr.getIdUsuario());
 			st.setInt(3, vr.getIdRespuesta());
