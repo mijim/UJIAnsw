@@ -13,10 +13,9 @@ public class Server {
 	    private static final int PORT = 1978;
 	    private static List<Socket> socketList = new LinkedList<Socket>();
 	    private volatile static Server unicInstance;
-	    private BDConnection bd;
 	   
-	    private Server(BDConnection bd){
-	    	this.bd = bd;
+	    @SuppressWarnings("resource")
+		private Server(BDConnection bd){
 	        ServerSocket serverSocket = null;
 	        Socket socket = null;
 	        System.out.println("Arrancando servidor...");
@@ -33,7 +32,7 @@ public class Server {
 	                socketList.add(socket);
 	               
 	            } catch (IOException e) {
-	                System.out.println("I/O error: " + e);
+	                System.err.println("I/O error: " + e);
 	            }
 	            // new thread for a client
 	            new ClientThread(socket, bd).start();

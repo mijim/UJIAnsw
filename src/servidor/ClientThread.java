@@ -15,12 +15,10 @@ public class ClientThread extends Thread {
 	
 	private Socket socket;
 	private BDConnection bd;
-	private Usuario user;
 	 
 	public ClientThread(Socket clientSocket, BDConnection bd) {
 	    this.socket = clientSocket;
 	    this.bd = bd;
-	    this.user = new Usuario(1, "anonimo", "anonimo@anonimo.anonimo", "x");
 	}
 	
 	public void run() {
@@ -39,7 +37,6 @@ public class ClientThread extends Thread {
 	    				Usuario usr = bd.logUsuario(auth.get(0), auth.get(1));
 	    				if(usr != null) {
 //	    					System.out.println("Logged in");
-	    					user = usr;
 	    					outObj.writeObject(new Mensaje("succes",usr));;
 	    				}else {
 	    					outObj.writeObject(new Mensaje("fail"));
