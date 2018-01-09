@@ -58,7 +58,7 @@ public class ClientThread extends Thread {
 	    				outObj.writeObject(new Mensaje(bd.newUsuario((Usuario) mess.getObject())));
 	    				break;
 	    			case "newValRes":
-	    				bd.cambiarValoracionRespuesta((ValoracionRespuesta) mess.getObject());
+	    				bd.newValoracionRespuesta((ValoracionRespuesta) mess.getObject());
 	    				outObj.writeObject(new Mensaje("Success"));
 	    				break;
 	    			case "newPregunta":

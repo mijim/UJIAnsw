@@ -38,6 +38,18 @@ public class BDConnection {
 		}
 		return unicInstance;
 	}
+	
+	private synchronized ResultSet executeQuery(PreparedStatement st) throws SQLException{
+		return st.executeQuery();
+	}
+	
+	private synchronized boolean execute(PreparedStatement st) throws SQLException{
+		return st.execute();
+	}
+	
+	private synchronized int executeUpdate(PreparedStatement st) throws SQLException{
+		return st.executeUpdate();
+	}
 
 	//Comprobar si el usuario existe con el mail y la contraseña para el login
 	public Usuario logUsuario(String mail, String pass) {
@@ -47,7 +59,7 @@ public class BDConnection {
 			st = connBd.prepareStatement("SELECT * FROM Usuario WHERE email=? AND pass=?");
 			st.setString(1, mail);
 			st.setString(2, pass);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			if(rs.next()) {
 				user = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
 			}
@@ -65,7 +77,7 @@ public class BDConnection {
 		try {
 			st = connBd.prepareStatement("SELECT * FROM Pregunta WHERE id_usuario=? ORDER BY fecha ASC ");
 			st.setInt(1, idUsuario);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			while(rs.next()) {
 				pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 				ls.add(pr);
@@ -83,7 +95,7 @@ public class BDConnection {
 		try {
 			st = connBd.prepareStatement("SELECT * FROM Usuario WHERE id_usuario=? ");
 			st.setInt(1, idUsuario);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			if(rs.next()) {
 				user = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
 			}
@@ -101,7 +113,7 @@ public class BDConnection {
 			st = connBd.prepareStatement("SELECT * FROM valoracion_preg WHERE id_usuario=? AND id_pregunta=?");
 			st.setInt(1, idUsuario);
 			st.setInt(2, idPregunta);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			if(rs.next()) {
 				value= new ValoracionPregunta(rs.getInt(1), rs.getInt(2), rs.getBoolean(3));
 			}
@@ -120,7 +132,7 @@ public class BDConnection {
 			st.setInt(1, idUsuario);
 			st.setInt(2, idPregunta);
 			st.setInt(3, idRespuesta);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			if(rs.next()) {
 				value= new ValoracionRespuesta(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getBoolean(4));
 			}
@@ -137,9 +149,9 @@ public class BDConnection {
 		PreparedStatement st;
 		Pregunta pr;
 		try {
-			st = connBd.prepareStatement("SELECT * FROM Pregunta ORDER BY fecha ASC LIMIT ?");
+			st = connBd.prepareStatement("SELECT * FROM Pregunta ORDER BY fecha DESC LIMIT ?");
 			st.setInt(1, numPreg);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			while(rs.next()) {
 				pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 				ls.add(pr);
@@ -159,7 +171,7 @@ public class BDConnection {
 		try {
 			st = connBd.prepareStatement("SELECT * FROM Pregunta ORDER BY valoracion DESC LIMIT ?");
 			st.setInt(1, numPreg);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			while(rs.next()) {
 				pr = new Pregunta(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 				ls.add(pr);
@@ -178,7 +190,7 @@ public class BDConnection {
 		try {
 			st = connBd.prepareStatement("SELECT * FROM Respuesta WHERE id_pregunta = ?");
 			st.setInt(1, idPreg);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			while(rs.next()) {
 				res = new Respuesta(rs.getInt(1),rs.getInt(2),rs.getInt(3), rs.getDate(4), rs.getString(5), rs.getInt(6));
 				ls.add(res);
@@ -197,7 +209,7 @@ public class BDConnection {
 		try {
 			st = connBd.prepareStatement("SELECT * FROM pregunta WHERE UPPER(titulo) LIKE UPPER('%"+palabra+"%')");
 			//st.setString(1, palabra);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = executeQuery(st);
 			while(rs.next()) {
 				pr = new Pregunta(rs.getInt(1), rs.getInt(2),rs.getDate(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 				ls.add(pr);
@@ -216,7 +228,7 @@ public class BDConnection {
 			st.setString(1, user.getNombre());
 			st.setString(2, user.getEmail());
 			st.setString(3, user.getPass());
-			st.execute();
+			execute(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error"; 			//TODO definir errores
@@ -235,7 +247,7 @@ public class BDConnection {
 			st.setString(4, preg.getSubtitulo());
 			st.setInt(5, preg.getValoracion());
 			st.setInt(6, preg.getNRespuestas());
-			st.execute();
+			execute(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -253,7 +265,7 @@ public class BDConnection {
 			st.setDate(3, (Date) res.getFecha());
 			st.setString(4, res.getTxtRespuesta());
 			st.setInt(5, res.getValoracion());
-			st.execute();
+			execute(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -269,7 +281,7 @@ public class BDConnection {
 			st.setInt(1, vp.getIdPregunta());
 			st.setInt(2, vp.getIdUsuario());
 			st.setBoolean(3, vp.getValoracion());
-			st.execute();
+			execute(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -285,7 +297,7 @@ public class BDConnection {
 			st.setBoolean(1, vp.getValoracion());
 			st.setInt(2, vp.getIdPregunta());
 			st.setInt(3, vp.getIdUsuario());
-			st.executeUpdate();
+			executeUpdate(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -302,7 +314,7 @@ public class BDConnection {
 			st.setInt(2, vr.getIdRespuesta());
 			st.setInt(3, vr.getIdUsuario());
 			st.setBoolean(4, vr.getValoracion());
-			st.execute();
+			execute(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
@@ -318,7 +330,7 @@ public class BDConnection {
 			st.setInt(1, vr.getIdPregunta());
 			st.setInt(2, vr.getIdUsuario());
 			st.setInt(3, vr.getIdRespuesta());
-			st.executeUpdate();
+			executeUpdate(st);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return "error:x"; 			//TODO definir errores
